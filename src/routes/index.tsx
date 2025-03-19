@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="p-2">
+    <div>
       <h3>
         Dashboard with current month overview <br />
         Quick-access features <br />

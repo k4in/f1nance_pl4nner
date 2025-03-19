@@ -9,5 +9,5 @@ export const Route = createFileRoute("/reports/")({
 });
 
 function About() {
-  return <div className="p-2">Hello from Reports!</div>;
+  return <div>Hello from Reports!</div>;
 }
