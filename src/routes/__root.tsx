@@ -1,6 +1,7 @@
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export const Route = createRootRoute({
   component: () => (
@@ -12,6 +13,7 @@ export const Route = createRootRoute({
         <Link to="/reports" className="[&.active]:font-bold">
           About
         </Link>
+        <ModeToggle />
       </div>
       <hr />
       <Outlet />
