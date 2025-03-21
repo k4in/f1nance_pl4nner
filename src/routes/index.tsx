@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
 /**
  * Dashboard with current month overview
@@ -8,26 +8,23 @@ Quick-access features
 Category summary cards
  */
 
-const supabaseURL = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+async function getTransactions() {
+  return await supabase.from("transactions").select();
+}
 
-const supabase = createClient(supabaseURL, supabaseKey);
+const transactionsQueryOptions = queryOptions({
+  queryKey: ["transactions"],
+  queryFn: getTransactions,
+});
 
 export const Route = createFileRoute("/")({
   component: Index,
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(transactionsQueryOptions),
 });
 
 function Index() {
-  const [transactions, setTransactions] = useState([]);
-
-  useEffect(() => {
-    getTransactions();
-  }, []);
-
-  async function getTransactions() {
-    const { data } = await supabase.from("transactions").select();
-    setTransactions(data);
-  }
+  const { data: transactions } = useSuspenseQuery(transactionsQueryOptions);
 
   return (
     <div>{transactions ? JSON.stringify(transactions) : "no data yet"}</div>
