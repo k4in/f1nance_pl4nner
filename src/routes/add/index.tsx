@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -326,6 +326,9 @@ function RouteComponent() {
             <Button type="submit">Add Transaction</Button>
             <Button type="button" variant="outline" onClick={() => console.log(methods.getValues())}>
               Log values
+            </Button>
+            <Button type="button" asChild variant="destructive">
+              <Link to="/">Abort</Link>
             </Button>
           </div>
         </form>
