@@ -2,6 +2,7 @@ import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ModeToggle } from '@/components/mode-toggle';
+import { Toaster } from '@/components/shadcn/sonner';
 import { cn } from '@/lib/utils/cn';
 
 function NavLink({ isActive, title }: { isActive: boolean; title: string }) {
@@ -37,6 +38,7 @@ export const Route = createRootRoute({
       <div className="px-10 py-8">
         <Outlet />
       </div>
+      <Toaster position="top-right" />
       <ReactQueryDevtools initialIsOpen={false} />
       <TanStackRouterDevtools />
     </>

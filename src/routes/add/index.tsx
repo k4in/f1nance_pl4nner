@@ -18,6 +18,7 @@ import { Checkbox } from '@/components/shadcn/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/shadcn/radio-group';
 import { Textarea } from '@/components/shadcn/textarea';
 import { RequiredMarker } from '@/components/form/required-marker';
+import { toast } from 'sonner';
 
 export const Route = createFileRoute('/add/')({
   component: RouteComponent,
@@ -50,12 +51,15 @@ type FormValues = z.infer<typeof schema>;
 const defaultValues = {
   amount: 0,
   description: '',
+  type: 'expense',
+  account_id: '',
+  category_id: '',
   date: '',
   is_recurring: false,
-  type: 'expense',
-  category_id: '',
-  account_id: '',
-} satisfies FormValues;
+  recurrence_end: '',
+  recurrence_type: 'monthly',
+  notes: '',
+} as FormValues;
 
 const category_idTempOptions = [
   { value: 'testoption1', label: 'TEST Category 1' },
@@ -71,6 +75,13 @@ const account_idTempOptions = [
 ];
 
 function onSubmit(data: FormValues) {
+  toast.success(
+    <div>
+      Transaction has been added!
+      <br />
+      <p className="text-muted-foreground text-xs">Check logs for temporary output</p>
+    </div>
+  );
   console.log(data);
 }
 
@@ -245,7 +256,6 @@ function RouteComponent() {
                   <FormField
                     control={methods.control}
                     name="recurrence_end"
-                    defaultValue=""
                     shouldUnregister={true}
                     render={({ field }) => (
                       <FormItem>
@@ -263,7 +273,6 @@ function RouteComponent() {
                   <FormField
                     control={methods.control}
                     name="recurrence_type"
-                    defaultValue="monthly"
                     shouldUnregister={true}
                     render={({ field }) => (
                       <FormItem className="space-y-1">
@@ -313,9 +322,12 @@ function RouteComponent() {
               />
             </div>
           </div>
-          <Button type="submit" className="mt-10">
-            Add Transaction
-          </Button>
+          <div className="flex items-center gap-4 mt-10">
+            <Button type="submit">Add Transaction</Button>
+            <Button type="button" variant="outline" onClick={() => console.log(methods.getValues())}>
+              Log values
+            </Button>
+          </div>
         </form>
       </Form>
     </main>
