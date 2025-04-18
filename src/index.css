@@ -7,12 +7,12 @@
   --radius: 0.625rem;
 
   /* Base layers */
-  --background: oklch(0.97 0.02 240);
+  --background: oklch(0.99 0.01 240);
   --foreground: oklch(0.15 0.04 240);
-  --card: oklch(0.99 0.01 240);
-  --card-foreground: oklch(0.15 0.04 240);
-  --popover: oklch(0.99 0.01 240);
-  --popover-foreground: oklch(0.15 0.04 240);
+  --card: oklch(0.95 0.02 240);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
 
   /* Brand & accents */
   --primary: oklch(0.35 0.25 230);
@@ -59,10 +59,11 @@
   /* Base layers */
   --background: oklch(0.08 0.05 240);
   --foreground: oklch(0.9 0.02 240);
-  --card: oklch(0.15 0.02 240);
-  --card-foreground: oklch(0.9 0.02 240);
-  --popover: oklch(0.15 0.02 240);
-  --popover-foreground: oklch(0.9 0.02 240);
+  /* --card: oklch(0.15 0.02 240); */
+  --card: oklch(0.173 0.02 240);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
 
   /* Brand & accents */
   --primary: oklch(0.65 0.25 230);

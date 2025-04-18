@@ -10,6 +10,7 @@ import { RequiredMarker } from '../form/required-marker';
 import { Input } from '../shadcn/input';
 import { Button } from '../shadcn/button';
 import { KeyRoundIcon } from 'lucide-react';
+import { ModeToggle } from '../mode-toggle';
 
 const schema = z.object({
   email: z.string().min(1, 'Please enter your email').email('Please enter a valid email address'),
@@ -47,7 +48,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-20">
+    <div className="max-w-sm mx-auto mt-20 p-4 bg-popover rounded-md">
       <div className="flex justify-between items-center border-b mb-6">
         <h1 className="text-2xl font-bold">Login</h1>
         <KeyRoundIcon className="size-4" />
@@ -88,9 +89,12 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="block self-start" disabled={isPending}>
-            Login
-          </Button>
+          <div className="flex justify-between items-center">
+            <Button type="submit" disabled={isPending}>
+              Login
+            </Button>
+            <ModeToggle />
+          </div>
         </form>
       </Form>
     </div>
