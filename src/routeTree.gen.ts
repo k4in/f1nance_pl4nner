@@ -15,6 +15,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as TransactionsIndexImport } from './routes/transactions/index'
 import { Route as SettingsIndexImport } from './routes/settings/index'
 import { Route as ReportsIndexImport } from './routes/reports/index'
+import { Route as AddIndexImport } from './routes/add/index'
 import { Route as TransactionsNewImport } from './routes/transactions/new'
 import { Route as TransactionsIdImport } from './routes/transactions/$id'
 import { Route as SettingsCategoriesImport } from './routes/settings/categories'
@@ -43,6 +44,12 @@ const SettingsIndexRoute = SettingsIndexImport.update({
 const ReportsIndexRoute = ReportsIndexImport.update({
   id: '/reports/',
   path: '/reports/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AddIndexRoute = AddIndexImport.update({
+  id: '/add/',
+  path: '/add/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TransactionsNewImport
       parentRoute: typeof rootRoute
     }
+    '/add/': {
+      id: '/add/'
+      path: '/add'
+      fullPath: '/add'
+      preLoaderRoute: typeof AddIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/reports/': {
       id: '/reports/'
       path: '/reports'
@@ -141,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/settings/categories': typeof SettingsCategoriesRoute
   '/transactions/$id': typeof TransactionsIdRoute
   '/transactions/new': typeof TransactionsNewRoute
+  '/add': typeof AddIndexRoute
   '/reports': typeof ReportsIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/transactions': typeof TransactionsIndexRoute
@@ -152,6 +167,7 @@ export interface FileRoutesByTo {
   '/settings/categories': typeof SettingsCategoriesRoute
   '/transactions/$id': typeof TransactionsIdRoute
   '/transactions/new': typeof TransactionsNewRoute
+  '/add': typeof AddIndexRoute
   '/reports': typeof ReportsIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/transactions': typeof TransactionsIndexRoute
@@ -164,6 +180,7 @@ export interface FileRoutesById {
   '/settings/categories': typeof SettingsCategoriesRoute
   '/transactions/$id': typeof TransactionsIdRoute
   '/transactions/new': typeof TransactionsNewRoute
+  '/add/': typeof AddIndexRoute
   '/reports/': typeof ReportsIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/transactions/': typeof TransactionsIndexRoute
@@ -177,6 +194,7 @@ export interface FileRouteTypes {
     | '/settings/categories'
     | '/transactions/$id'
     | '/transactions/new'
+    | '/add'
     | '/reports'
     | '/settings'
     | '/transactions'
@@ -187,6 +205,7 @@ export interface FileRouteTypes {
     | '/settings/categories'
     | '/transactions/$id'
     | '/transactions/new'
+    | '/add'
     | '/reports'
     | '/settings'
     | '/transactions'
@@ -197,6 +216,7 @@ export interface FileRouteTypes {
     | '/settings/categories'
     | '/transactions/$id'
     | '/transactions/new'
+    | '/add/'
     | '/reports/'
     | '/settings/'
     | '/transactions/'
@@ -209,6 +229,7 @@ export interface RootRouteChildren {
   SettingsCategoriesRoute: typeof SettingsCategoriesRoute
   TransactionsIdRoute: typeof TransactionsIdRoute
   TransactionsNewRoute: typeof TransactionsNewRoute
+  AddIndexRoute: typeof AddIndexRoute
   ReportsIndexRoute: typeof ReportsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
   TransactionsIndexRoute: typeof TransactionsIndexRoute
@@ -220,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsCategoriesRoute: SettingsCategoriesRoute,
   TransactionsIdRoute: TransactionsIdRoute,
   TransactionsNewRoute: TransactionsNewRoute,
+  AddIndexRoute: AddIndexRoute,
   ReportsIndexRoute: ReportsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
   TransactionsIndexRoute: TransactionsIndexRoute,
@@ -240,6 +262,7 @@ export const routeTree = rootRoute
         "/settings/categories",
         "/transactions/$id",
         "/transactions/new",
+        "/add/",
         "/reports/",
         "/settings/",
         "/transactions/"
@@ -259,6 +282,9 @@ export const routeTree = rootRoute
     },
     "/transactions/new": {
       "filePath": "transactions/new.tsx"
+    },
+    "/add/": {
+      "filePath": "add/index.tsx"
     },
     "/reports/": {
       "filePath": "reports/index.tsx"
