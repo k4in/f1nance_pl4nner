@@ -2,25 +2,33 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/lib/supabase';
 import { type Session } from '@/types/auth';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormMessage, FormItem, FormField, FormLabel } from '../shadcn/form';
 import { toast } from 'sonner';
+import { RequiredMarker } from '../form/required-marker';
+import { Input } from '../shadcn/input';
+import { Button } from '../shadcn/button';
+import { KeyRoundIcon } from 'lucide-react';
 
-export type LoginInputs = {
-  email: string;
-  password: string;
-};
+const schema = z.object({
+  email: z.string().min(1, 'Please enter your email').email('Please enter a valid email address'),
+  password: z.string().min(5, 'Please enter your password'),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 const defaultValues = {
   email: (import.meta.env.VITE_TESTUSER_EMAIL as string) || '',
   password: (import.meta.env.VITE_TESTUSER_PASSWORD as string) || '',
-};
+} satisfies FormValues;
 
 export function LoginForm() {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, formState } = useForm<LoginInputs>({ defaultValues });
-  const { errors } = formState;
+  const methods = useForm<FormValues>({ defaultValues, resolver: zodResolver(schema) });
 
-  const loginMutation = useMutation<Session, Error, LoginInputs>({
-    mutationFn: async (creds: LoginInputs) => {
+  const { mutate: login, isPending } = useMutation<Session, Error, FormValues>({
+    mutationFn: async (creds: FormValues) => {
       const { error, data } = await supabase.auth.signInWithPassword(creds);
       if (error) throw error;
       return data.session;
@@ -34,41 +42,57 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = (values: LoginInputs) => {
-    loginMutation.mutate(values);
+  const onSubmit = (values: FormValues) => {
+    login(values);
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-20 p-4 border rounded">
-      <h2 className="text-xl mb-4">Log in</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block text-sm">Email</label>
-          <input
-            type="email"
-            autoComplete="off"
-            {...register('email', { required: 'Email is required' })}
-            className="w-full px-3 py-2 border rounded"
+    <div className="max-w-sm mx-auto mt-20">
+      <div className="flex justify-between items-center border-b mb-6">
+        <h1 className="text-2xl font-bold">Login</h1>
+        <KeyRoundIcon className="size-4" />
+      </div>
+      <Form {...methods}>
+        <form className="flex flex-col gap-6" onSubmit={methods.handleSubmit(onSubmit)}>
+          <FormField
+            control={methods.control}
+            name="email"
+            shouldUnregister={true}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  e-Mail
+                  <RequiredMarker />
+                </FormLabel>
+                <FormControl>
+                  <Input type="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
-        </div>
-        <div>
-          <label className="block text-sm">Password</label>
-          <input
-            type="password"
-            autoComplete="off"
-            {...register('password', {
-              required: 'Password is required',
-            })}
-            className="w-full px-3 py-2 border rounded"
+          <FormField
+            control={methods.control}
+            name="password"
+            shouldUnregister={true}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Password
+                  <RequiredMarker />
+                </FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
-        </div>
-        <button type="submit" disabled={loginMutation.isPending} className="w-full bg-primary text-white py-2 rounded">
-          {loginMutation.isPending ? 'Logging in…' : 'Log in'}
-        </button>
-        {loginMutation.isError && <p className="text-red-600 text-sm mt-2">{loginMutation.error.message}</p>}
-      </form>
+          <Button type="submit" className="block self-start" disabled={isPending}>
+            Login
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }
