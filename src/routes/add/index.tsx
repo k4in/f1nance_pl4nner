@@ -16,6 +16,8 @@ import { Input } from '@/components/shadcn/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/shadcn/select';
 import { Checkbox } from '@/components/shadcn/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/shadcn/radio-group';
+import { Textarea } from '@/components/shadcn/textarea';
+import { RequiredMarker } from '@/components/form/required-marker';
 
 export const Route = createFileRoute('/add/')({
   component: RouteComponent,
@@ -27,6 +29,7 @@ const baseSchema = z.object({
   date: z.string().min(1, 'Start date is required'),
   type: z.enum(['expense', 'income'], { message: 'Please specify a valid transaction type' }),
   category_id: z.string().min(1, 'At least 1 Category is required'),
+  notes: z.string().optional(),
   account_id: z.string().min(1, 'Account is required'),
 });
 
@@ -49,8 +52,6 @@ const defaultValues = {
   description: '',
   date: '',
   is_recurring: false,
-  // recurrence_type: 'monthly',
-  // recurrence_end: '',
   type: 'expense',
   category_id: '',
   account_id: '',
@@ -87,7 +88,10 @@ function RouteComponent() {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Amount</FormLabel>
+                    <FormLabel>
+                      Amount
+                      <RequiredMarker />
+                    </FormLabel>
                     <FormControl>
                       <Input type="number" step="0.01" {...field} />
                     </FormControl>
@@ -100,7 +104,10 @@ function RouteComponent() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>
+                      Description
+                      <RequiredMarker />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" {...field} />
                     </FormControl>
@@ -114,7 +121,10 @@ function RouteComponent() {
                 name="type"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
-                    <FormLabel>Transaction Type</FormLabel>
+                    <FormLabel>
+                      Transaction Type
+                      <RequiredMarker />
+                    </FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -144,7 +154,10 @@ function RouteComponent() {
                 name="account_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Account</FormLabel>
+                    <FormLabel>
+                      Account
+                      <RequiredMarker />
+                    </FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="w-full">
@@ -168,7 +181,10 @@ function RouteComponent() {
                 name="category_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>
+                      Category
+                      <RequiredMarker />
+                    </FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="w-full">
@@ -196,6 +212,7 @@ function RouteComponent() {
                   <FormItem>
                     <FormLabel>
                       {methods.watch('is_recurring') ? 'Date of first Transaction' : 'Transaction date'}
+                      <RequiredMarker />
                     </FormLabel>
                     <FormControl>
                       <Input type="date" {...field} />
@@ -250,7 +267,10 @@ function RouteComponent() {
                     shouldUnregister={true}
                     render={({ field }) => (
                       <FormItem className="space-y-1">
-                        <FormLabel>Recurrence Frequency</FormLabel>
+                        <FormLabel>
+                          Recurrence Frequency
+                          <RequiredMarker />
+                        </FormLabel>
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -277,6 +297,20 @@ function RouteComponent() {
                   />
                 </>
               )}
+              <FormField
+                control={methods.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Optional notes</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} />
+                    </FormControl>
+                    <FormDescription>Additional details to describe the transaction</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
           <Button type="submit" className="mt-10">
