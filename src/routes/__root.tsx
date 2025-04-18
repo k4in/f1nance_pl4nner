@@ -2,9 +2,9 @@ import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ModeToggle } from '@/components/mode-toggle';
-import { Toaster } from '@/components/shadcn/sonner';
 import { AuthWrapper } from '@/components/auth/auth-wrapper';
 import { NavLink } from '@/components/ui/nav-link';
+import { LogoutButton } from '@/components/auth/logout-button';
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -22,12 +22,12 @@ function RootComponent() {
         <div className="flex gap-4 items-center">
           <Link to="/settings">{({ isActive }) => <NavLink isActive={isActive} title={'Settings'} />}</Link>
           <ModeToggle />
+          <LogoutButton />
         </div>
       </header>
       <div className="px-10 py-8">
         <Outlet />
       </div>
-      <Toaster position="top-right" />
       <ReactQueryDevtools initialIsOpen={false} />
       <TanStackRouterDevtools />
     </AuthWrapper>

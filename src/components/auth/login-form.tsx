@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/lib/supabase';
 import { type Session } from '@/types/auth';
+import { toast } from 'sonner';
 
 export type LoginInputs = {
   email: string;
@@ -19,13 +20,17 @@ export function LoginForm() {
   const { errors } = formState;
 
   const loginMutation = useMutation<Session, Error, LoginInputs>({
-    mutationFn: (creds) =>
-      supabase.auth.signInWithPassword(creds).then(({ data, error }) => {
-        if (error) throw error;
-        return data.session;
-      }),
+    mutationFn: async (creds: LoginInputs) => {
+      const { error, data } = await supabase.auth.signInWithPassword(creds);
+      if (error) throw error;
+      return data.session;
+    },
     onSuccess: (session) => {
       queryClient.setQueryData(['auth', 'session'], session);
+      toast.success('Login successful!');
+    },
+    onError: () => {
+      toast.error('Could not login!');
     },
   });
 
