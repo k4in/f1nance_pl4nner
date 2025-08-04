@@ -1,35 +1,34 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ModeToggle } from '@/components/mode-toggle';
-import { AuthWrapper } from '@/components/auth/auth-wrapper';
-import { NavLink } from '@/components/ui/nav-link';
-import { LogoutButton } from '@/components/auth/logout-button';
+import { createRootRouteWithContext, Link, Outlet } from '@tanstack/react-router';
+import { type QueryClient } from '@tanstack/react-query';
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
   component: RootComponent,
+  notFoundComponent: () => {
+    return (
+      <div>
+        <p>This is the notFoundComponent configured on root route</p>
+        <Link to="/">Start Over</Link>
+      </div>
+    );
+  },
 });
 
 function RootComponent() {
   return (
-    <AuthWrapper>
-      <header className="px-10 border-b h-16 flex justify-between items-center bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10">
-        <nav className="flex gap-4 items-center">
-          <Link to="/">{({ isActive }) => <NavLink isActive={isActive} title={'Home'} />}</Link>
-          <Link to="/reports">{({ isActive }) => <NavLink isActive={isActive} title={'Reports'} />}</Link>
-          <Link to="/add">{({ isActive }) => <NavLink isActive={isActive} title={'Add Transaction'} />}</Link>
-        </nav>
-        <div className="flex gap-4 items-center">
-          <Link to="/settings">{({ isActive }) => <NavLink isActive={isActive} title={'Settings'} />}</Link>
-          <ModeToggle />
-          <LogoutButton />
-        </div>
-      </header>
-      <div className="px-10 py-8">
+    <>
+      <nav className="p-2 flex gap-2">
+        <Link to="/" className="[&.active]:font-bold">
+          Home
+        </Link>{' '}
+        <Link to="/charts" className="[&.active]:font-bold">
+          Charts
+        </Link>
+      </nav>
+      <main>
         <Outlet />
-      </div>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <TanStackRouterDevtools />
-    </AuthWrapper>
+      </main>
+    </>
   );
 }
