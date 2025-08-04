@@ -1,5 +1,6 @@
 import { createRootRouteWithContext, Link, Outlet } from '@tanstack/react-router';
 import { type QueryClient } from '@tanstack/react-query';
+import { ThemeToggleButton } from '../components/theme-toggle';
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -18,15 +19,18 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <>
-      <nav className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{' '}
-        <Link to="/charts" className="[&.active]:font-bold">
-          Charts
-        </Link>
-      </nav>
-      <main>
+      <header className="px-4 md:px-20 h-16 flex items-center bg-neutral-100 shadow sticky top-0 justify-between">
+        <nav className="flex gap-4 items-center">
+          <Link to="/" className="[&.active]:font-bold">
+            Home
+          </Link>{' '}
+          <Link to="/charts" className="[&.active]:font-bold">
+            Charts
+          </Link>
+        </nav>
+        <ThemeToggleButton />
+      </header>
+      <main className="px-4 md:px-20 py-4 md:py-10">
         <Outlet />
       </main>
     </>
