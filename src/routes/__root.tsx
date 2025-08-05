@@ -19,7 +19,7 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <>
-      <header className="px-4 md:px-20 h-16 flex items-center bg-neutral-100 shadow sticky top-0 justify-between">
+      <header className="px-4 md:px-20 h-16 flex items-center bg-card shadow sticky top-0 justify-between">
         <nav className="flex gap-4 items-center">
           <Link to="/" className="[&.active]:font-bold">
             Home

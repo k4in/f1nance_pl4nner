@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function ThemeToggleButton() {
   const [theme, setTheme] = useState(sessionStorage.getItem('theme') || 'dark');
@@ -14,11 +15,8 @@ export function ThemeToggleButton() {
   };
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="size-8 border-2 border-green-500 hover:bg-neutral-200 transition-colors flex items-center justify-center rounded-md"
-    >
+    <Button onClick={toggleTheme} size="icon">
       {theme === 'light' ? <Sun className="size-5" /> : <Moon className="size-5" />}
-    </button>
+    </Button>
   );
 }
