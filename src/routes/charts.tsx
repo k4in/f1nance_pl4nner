@@ -5,5 +5,5 @@ export const Route = createFileRoute('/charts')({
 });
 
 function Charts() {
-  return <div className="p-2">Hello from Charts!</div>;
+  return <div>Hello from Charts!</div>;
 }

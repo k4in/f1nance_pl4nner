@@ -80,6 +80,10 @@
 - CSV Import/Export
 - Dashboard Widgets
 
+## Pages
+
+- homepage: Transaktionsübersicht, table
+
 ## Database Schema (Vorschlag)
 
 ### Multi-App User Management
